@@ -1,13 +1,9 @@
-"""This script allows for the running of Hierarchical CADNet on a single CAD model and saving the final result.
+"""
+This script allows for the running of FilletRec on a single CAD model and saving the predicted label to another .step file.
 
 This script requires installing pythonocc: https://github.com/tpaviot/pythonocc.
 """
 
-import tensorflow as tf
-import numpy as np
-import os
-
-from collections import defaultdict
 
 from OCC.Core.STEPConstruct import stepconstruct_FindEntity
 from OCC.Core.TCollection import TCollection_HAsciiString
@@ -33,6 +29,10 @@ from occwl.uvgrid import uvgrid
 from OCC.Core.BRep import BRep_Tool
 from occwl.face import Face
 
+import tensorflow as tf
+import numpy as np
+import os
+from collections import defaultdict
 import json
 from src.helper import normalize_curvature,normalize_attr,normalize_adj
 from src.network import FilletRecGCN as FilletGCN

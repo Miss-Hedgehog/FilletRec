@@ -1,4 +1,6 @@
 
+"""Mesh Extending"""
+
 from OCC.Display.SimpleGui import init_display
 from OCC.Extend.TopologyUtils import TopologyExplorer
 from OCC.Core.StepRepr import StepRepr_RepresentationItem
@@ -87,7 +89,6 @@ def get_edge_wire_mapping(face, edges):
     return results
 
 
-#get fillet face and non-fillet face
 def read_step_with_labels(filename):
     """Reads STEP file with labels on each B-Rep face."""
     if not os.path.exists(filename):
@@ -126,8 +127,9 @@ def read_step_with_labels(filename):
     return shape, fillet_faces,non_fillet_faces
 
 
-#return after removing fillet face shape
+
 def remove_fillets_and_stitch(non_fillet_faces):
+    """remove fillet faces and stitch to a new shape"""
    
     sewer = BRepBuilderAPI_Sewing(1e-6)
     for face in non_fillet_faces:
@@ -141,6 +143,7 @@ def remove_fillets_and_stitch(non_fillet_faces):
 
 
 def identify_boundary_edges(shape):
+    """find boundary edges after removing fillet faces"""
 
     edge_map = TopTools_IndexedDataMapOfShapeListOfShape()
     
@@ -459,6 +462,7 @@ def add_mesh_at_boundary(face,face_count,boundary_cad_edges,mesh,node_count,offs
     
 
 def add_mesh_at_face(face,face_count,boundary_edges,offset):
+    """extend mesh for a triangulated b-rep face"""
     old_triangulation=get_face_triangulation(face)
     new_triangulations=[]
     
@@ -495,6 +499,8 @@ def add_mesh_at_face(face,face_count,boundary_edges,offset):
 
 
 def simplify_fillet_with_mesh(shape,all_boundary_edges,offset_dis,deflection=0.1):
+    """extend mesh along boundary edges"""
+    
     print("Meshing the shape without fillet faces!")
     mesh = BRepMesh_IncrementalMesh(shape, deflection)  
     mesh.Perform()
@@ -515,13 +521,12 @@ def simplify_fillet_with_mesh(shape,all_boundary_edges,offset_dis,deflection=0.1
         boundary_edges=[]
         while edge_exp.More():
             edge = edge_exp.Current()
-            # boundary_edges.append(edge)
             if edge in all_boundary_edges:
                 boundary_edges.append(edge)
             edge_exp.Next()
             
         print("*"*50+f"Face {count}"+"*"*50)
-        # boundary_edges=[]
+        
         if len(boundary_edges)!=0:
             print(f"Face {count} has {len(boundary_edges)} boundary edges, need to be extended!")
             nodes,tris,labels = add_mesh_at_face(face,count,boundary_edges,offset_dis)
@@ -573,25 +578,24 @@ def visualize(shape):
         
     
 def main():
-    # read step file and label
+    # 1.read step file and label
     filename="1333"
     step_file = f"save/abc_{filename}_rec.step" 
     original_shape,fillet_faces,non_fillet_faces=read_step_with_labels(step_file)
     print(f"step file {step_file} has {len(fillet_faces)} fillet faces and {len(non_fillet_faces)} non_fillet faces!")
     
-    # remove fillet faces and stitch a new shape
+    # 2.remove fillet faces and stitch a new shape
     sewed_shape=remove_fillets_and_stitch(non_fillet_faces)
     
-    #find boundary edges after removing fillet faces
+    # 3.find boundary edges after removing fillet faces
     boundary_edges=identify_boundary_edges(sewed_shape) 
     
-    #extend mesh along boundary edges
+    # 4.extend mesh along boundary edges
     new_nodes,new_tris,new_labels=simplify_fillet_with_mesh(sewed_shape,boundary_edges,offset_dis=5.0,deflection=0.1) 
    
-    
+    # 5.write extended mesh to vtk file
     write_mesh_to_vtk(new_nodes,new_tris,new_labels,f"./simplify/abc_{filename}_sim.vtk")
     
-
     # visualize(sewed_shape)
     
      

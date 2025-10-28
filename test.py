@@ -1,3 +1,4 @@
+""" Script for testing trained FilletRec on test dataset"""
 
 import time
 import tensorflow as tf
@@ -40,8 +41,8 @@ if __name__ == '__main__':
     model = FilletGCN(units=units, out_channel=out_dim,filter=filters,rate=dropout_rate, num_classes=num_classes, num_layers=num_layers)
     model.build(input_shape=[
     (None, 50),  # V_1
-    (None,1),
-    (None,1),
+    (None,1),    # Width attr
+    (None,1),    # Angle attr
     (None, None),              # A_1
     (None, None),              # E_1
     (None, None),              # E_2

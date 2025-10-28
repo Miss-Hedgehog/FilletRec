@@ -1,4 +1,4 @@
-"""Module containing classes for different neural network layers for Hierarchical CADNet neural architecture."""
+"""Module of different neural network layers for FilletRec architecture."""
 
 
 import tensorflow as tf
@@ -24,7 +24,6 @@ class GraphCNNLayer(tf.keras.layers.Layer):
         self.W_I = None
         self.b = None
     
-    #defer weights creation until the input_shape is known
     def build(self, input_shape): 
         V_shape, _ = input_shape
         num_features = V_shape[1]
@@ -38,8 +37,8 @@ class GraphCNNLayer(tf.keras.layers.Layer):
         self.W = self.add_weight(
             shape=W_dim,
             dtype=tf.float32,
-            initializer=tf.keras.initializers.TruncatedNormal(stddev=W_stddev), #standard deviation
-            regularizer=tf.keras.regularizers.l2(self.weight_decay), #weight_decay is lambda
+            initializer=tf.keras.initializers.TruncatedNormal(stddev=W_stddev), 
+            regularizer=tf.keras.regularizers.l2(self.weight_decay), 
             trainable=True,
             name="W")
 
@@ -98,7 +97,7 @@ class GraphEmbeddingLayer(tf.keras.layers.Layer):
 
 
 class PreProcessingAttrLayer(tf.keras.layers.Layer):
-    """Graph embedding layer for summarizing learned information."""
+    """Pre-process attribute layer"""
     def __init__(self, filters, name="GEmbed", **kwargs):
         super(PreProcessingAttrLayer, self).__init__(name=name, **kwargs)
 
@@ -136,6 +135,7 @@ class PreProcessingAttrLayer(tf.keras.layers.Layer):
 
 
 class PreProcessingCurvLayer(tf.keras.layers.Layer):
+    """Pre-process curvature layer (optional)"""
     def __init__(self, 
                  filters,
                  kernel_size=3,

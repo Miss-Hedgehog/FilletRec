@@ -1,5 +1,5 @@
 """
-A visualization tool for the machining feature dataset.
+A visualization tool for the *.step file with labels.
 
 This module requires PythonOCC to run.
 """
@@ -137,7 +137,6 @@ if __name__ == '__main__':
     add_function_to_menu('explore', show_first)
     add_function_to_menu('explore', show_last)
 
-    #shape_paths = glob.glob(os.path.join(dataset_dir, '*.stp'))
     shape_paths = glob.glob(os.path.join(dataset_dir, '*.step'))
 
     print(len(shape_paths), 'shapes')

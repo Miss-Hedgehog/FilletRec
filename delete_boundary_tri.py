@@ -1,3 +1,5 @@
+"""Mesh Cleaning"""
+
 from collections import defaultdict
 import numpy as np
 from write_read_vtk import write_mesh_to_vtk,write_mesh_to_vtk_v2,read_vtk_to_mesh
@@ -13,6 +15,7 @@ def get_mesh_topology(nodes,triangles):
 
     
 def delete_boundary_triangles(nodes,tris):
+    """delete non-manifold structure"""
     edge_to_tris=get_mesh_topology(nodes,tris)
     
     new_tris=[]
@@ -49,6 +52,7 @@ def delete_boundary_triangles(nodes,tris):
 
 
 def remove_dangling_meshes(nodes, tris):
+    """remove isolated component based on BFS"""
     if len(tris) == 0:
         return nodes, tris
     
@@ -105,6 +109,7 @@ def remove_dangling_meshes(nodes, tris):
     return nodes, filtered_tris,deleted_tris
 
 def label_deleted_tris(tris, deleted_tris):
+ 
     deleted_set = set(tuple(tri) for tri in deleted_tris)
     labels = []
     for tri in tris:
@@ -127,6 +132,7 @@ def main():
     deleted_tris_1.extend(deleted_tris_2)
     
     labels=label_deleted_tris(old_tris,deleted_tris_1)
+    
     write_mesh_to_vtk(old_nodes,old_tris,labels,f"./simplify/{filename}_relabel_autogrid.vtk",minus_one=False)
     write_mesh_to_vtk_v2(new_nodes,new_tris,f"./simplify/{filename}_result.vtk",minus_one=False)
     

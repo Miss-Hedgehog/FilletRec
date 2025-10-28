@@ -1,5 +1,8 @@
+"""Functions for writing to vtk file and reading from vtk file."""
 
 def read_vtk_to_mesh(filename):
+    """read vtk file to a mesh"""
+    
     nodes = []
     triangles = []
     
@@ -43,6 +46,8 @@ def read_vtk_to_mesh(filename):
 
 
 def write_mesh_to_vtk(nodes,triangles,labels,filename,minus_one=True):
+    """write mesh with labels to vtk file"""
+    
     with open(filename, 'w') as f:
         
         f.write("# vtk DataFile Version 2.0\n")
@@ -76,11 +81,12 @@ def write_mesh_to_vtk(nodes,triangles,labels,filename,minus_one=True):
         for label in labels:
             f.write(f"{label}\n")
         
-        
     print(f"The new mesh has been written to {filename}!")
     
 
 def write_mesh_to_vtk_v2(nodes,triangles,filename,minus_one=True):
+    """write mesh to vtk file"""
+    
     with open(filename, 'w') as f:
         
         f.write("# vtk DataFile Version 2.0\n")

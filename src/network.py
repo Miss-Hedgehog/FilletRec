@@ -1,4 +1,4 @@
-"""Module for defining Hierarchical CADNet network architecture using only adjacency information."""
+"""FilletRec network architecture"""
 
 from src.layers import *
 
@@ -43,7 +43,6 @@ class FilletRecGCN(tf.keras.Model):
         self.dp_3 = tf.keras.layers.Dropout(rate=rate, name="DP_3")
      
     
-        # Level 1 - Final (Block 5)
         self.ge_final = GraphEmbeddingLayer(filters=num_classes, name="GE_final")
         
        

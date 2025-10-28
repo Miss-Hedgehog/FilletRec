@@ -87,16 +87,16 @@ To extend the boundary mesh, set the `filename` and `step_file` parameters, wher
 python ./simplify_fillet_mesh.py
 ```
 
-In `simplify_fillet_with_mesh()` function, the `offset_dis` parameter controls the mesh extension distance. Based on your specific model, you can check the extended mesh file `*_sim.vtk` to adjust this value. 
+In `simplify_fillet_with_mesh()` function, the `offset_dis` parameter controls the mesh extension distance. Based on your specific model, you can check the extended mesh file `*_sim.vtk` to adjust this value. Also, you can adjust the conformality of the mesh by resetting `defletion` parameter.
 
 Sometimes, setting a uniform `offset_dis` for all surfaces may not be suitable, you can modify code of `add_mesh_at_boundary()` function to extend triangle mesh on different surfaces by different distances to accomodate complex fillet types. For example:
 
 ```
 ......
-if face_count == x:
+if face_count == face_num:
     offset_distance = distance1
 
-if face_count in [x, x, x]:
+if face_count in [face_num1, face_num2, ... ,face_numx]:
     offset_distance = distance2
 ......
 

@@ -1,4 +1,4 @@
-"""Script for training loop of Hierarchical CADNet (Edge)."""
+"""Script for training FilletRec."""
 import tensorflow as tf
 import datetime as dt
 from src.network import FilletRecGCN as FilletGCN

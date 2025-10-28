@@ -1,4 +1,5 @@
-"""Module containing useful functions such as dataloader generator functions."""
+"""Module containing useful functions such as dataloader function and data normalize function."""
+
 import tensorflow as tf
 import h5py
 import numpy as np
@@ -36,6 +37,7 @@ def normalize_attr(data):
 
 
 def normalize_adj(adj_dense):
+    """Adajcent matrix with self loop"""
   
     if len(adj_dense.shape) != 2:
         raise ValueError("Adj shape is not correct!")
@@ -46,11 +48,11 @@ def normalize_adj(adj_dense):
     adj_with_self_loops = adj_dense + tf.eye(N, dtype=adj_dense.dtype)
     
     #D
-    degrees = tf.reduce_sum(adj_with_self_loops, axis=1)  # 形状 [N]
+    degrees = tf.reduce_sum(adj_with_self_loops, axis=1) 
     
     #D^(-1/2)
     d_inv_sqrt = tf.pow(degrees, -0.5)
-    d_inv_sqrt = tf.where(tf.math.is_inf(d_inv_sqrt), 0.0, d_inv_sqrt)  # 处理度为0的节点
+    d_inv_sqrt = tf.where(tf.math.is_inf(d_inv_sqrt), 0.0, d_inv_sqrt)  
     
     # D^(-1/2)
     D_inv_sqrt = tf.linalg.diag(d_inv_sqrt)
@@ -103,7 +105,7 @@ def dataloader(file_path):
         
         
         V_1_curvature=tf.abs(V_1[:,:50])
-        V_1_attr=V_1[:,50:51] #surface distance
+        V_1_attr=V_1[:,50:51] #surface width
         V_1_topo=V_1[:,51:52] #adjacent surface angle
 
         
