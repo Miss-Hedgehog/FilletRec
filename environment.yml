@@ -1,0 +1,12 @@
+name: filletrec
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.8
+  - tensorflow=2.13.0
+  - pythonocc-core=7.5.1
+  - numpy
+  - scikit-learn
+  - matplotlib
+  - pip
