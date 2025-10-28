@@ -384,6 +384,9 @@ def add_mesh_at_boundary(face,face_count,boundary_cad_edges,mesh,node_count,offs
     new_tris=[]
     twoend_points=[]
     
+    # if face_count in []:
+    #     offset_distance = 
+    
     for i, (start_idx,end_idx) in enumerate(boundary_edges):
         boundary_vertices[start_idx].append(i)
         boundary_vertices[end_idx].append(i) #mapping index of boundary_edges and boundary_edges_wire and boundary_edges_tris
