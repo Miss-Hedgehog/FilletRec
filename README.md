@@ -29,7 +29,7 @@ conda activate filletrec
 If the environment.yml installation fails, you can install the required packages manually.
 ### Data preparation
 
-Our synthetic Fillet datasets have been publicly available on [Science Data Bank](https://www.scidb.cn/en/detail?dataSetId=931c088fd44f4d3e82891a5180f10d90)
+Our synthetic Fillet datasets have been publicly available on [Kaggle](https://www.kaggle.com/datasets/gcujrrly/filletrec)
 
 ## Usage
 
